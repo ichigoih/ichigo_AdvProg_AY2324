@@ -14,14 +14,12 @@ using std::cin;
     Returns:
         number (int) : random number in range [min; max]
 ***/
-int generateRandomNumber(const int min, const int max)
-{
+int generateRandomNumber(const int min, const int max) {
     // TODO: Return a random integer number between min and max
-    return 1;
+    return rand() % max + min;
 }
 
-vector<string> readWordListFromFile(const string& filePath)
-{
+vector<string> readWordListFromFile(const string& filePath) {
     vector<string> wordList;
     string word;
     ifstream wordFile (filePath);
@@ -48,9 +46,11 @@ vector<string> readWordListFromFile(const string& filePath)
     Returns:
         result (bool) : the character ch is in the word or not.
 ***/
-bool isCharInWord(const char ch, const string& word)
-{
+bool isCharInWord(const char ch, const string& word) {
     // TODO: return true if ch is in word else return false
+    if (word.find(ch) == string::npos)
+        return false;
+
     return true;
 }
 
@@ -66,6 +66,9 @@ string chooseWordFromList(const vector<string>& wordList, int index)
     // TODO: Return a lowercase word in the index position of the vector wordList.
     string answer;
 
+    for (auto x : wordList[index])
+        answer += tolower(x);
+
     return answer;
 }
 
@@ -75,9 +78,9 @@ string chooseWordFromList(const vector<string>& wordList, int index)
     Returns:
         secretWord (string): answerWord in hidden form (form of ---)
 ***/
-string generateHiddenCharacters(string answerWord){
+string generateHiddenCharacters(string answerWord) {
     // TODO: Based on answerWord's length, generate hidden characters in form of "---"
-    string secretWord;
+    string secretWord = string(answerWord.size(), '-');
 
     return secretWord;
 }
@@ -96,9 +99,12 @@ char getInputCharacter() {
     Returns:
         void
 ***/
-void updateSecretWord(string& secretWord, const char ch, const string& word)
-{
+void updateSecretWord(string& secretWord, const char ch, const string& word) {
     // TODO: Update the secret word if the character ch is in the answer word.
+    auto pos = word.find(ch);
+
+    if (pos != string::npos)
+        secretWord[pos] = ch;
 }
 
 /***
@@ -110,6 +116,7 @@ void updateSecretWord(string& secretWord, const char ch, const string& word)
 ***/
 void updateEnteredChars(const char ch, string& chars){
     // TODO: append the character ch is in end of the text chars
+    chars += ch;
 }
 
 /***
@@ -120,6 +127,7 @@ void updateEnteredChars(const char ch, string& chars){
 ***/
 void updateIncorrectGuess(int& incorrectGuess){
     // TODO: increase the value of incorrectGuess by 1
+    incorrectGuess++;
 }
 
 /***
@@ -133,11 +141,7 @@ void updateIncorrectGuess(int& incorrectGuess){
     Returns:
         void
 ***/
-void processData(const char ch, const string& word, 
-                string& secretWord, 
-                string& correctChars, 
-                int& incorrectGuess, string& incorrectChars)
-{
+void processData(const char ch, const string& word, string& secretWord, string& correctChars, int& incorrectGuess, string& incorrectChars) {
     /*** TODO
         If ch in word:
             update secretWord: call updateSecretWord() function
@@ -146,5 +150,11 @@ void processData(const char ch, const string& word,
             update incorrectGuess: call updateIncorrectGuess() function
             update incorrectChars: call updateEnteredChars() function
     ***/
+    if (word.find(ch) != string::npos) {
+        updateSecretWord(secretWord, ch, word);
+        updateEnteredChars(ch, correctChars);
+    } else {
+        updateIncorrectGuess(incorrectGuess);
+        updateEnteredChars(ch, incorrectChars);
+    }
 }
-
