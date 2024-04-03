@@ -12,7 +12,6 @@ int readWordLen() {
     cout << endl << "Enter the number characters of your secret word: ";
     cin >> wordLen;
     return wordLen;
-    
 }
 
 /***
