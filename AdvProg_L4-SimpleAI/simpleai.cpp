@@ -41,6 +41,13 @@ vector<string> filterWordsByLen(int wordLen, const vector<string>& vocabulary) {
 char nextCharWhenWordIsNotInDictionary(const set<char>& selectedChars) {
     char answer;
     //Write your code here
+    for (char ch = 'a'; ch <= 'z'; ch++) {
+        if (selectedChars.find(ch) == selectedChars.end()) {
+            answer = ch;
+            break;
+        }
+    }
+
     return answer;
 }
 
@@ -54,6 +61,10 @@ char nextCharWhenWordIsNotInDictionary(const set<char>& selectedChars) {
 map<char, int> countOccurrences(const vector<string>& candidateWords) {
     map<char, int> answer;
     //Write your code here
+    for (const auto& word : candidateWords)
+        for (const auto& character : word)
+            answer[character]++;
+
     return answer;
 }
 
@@ -68,6 +79,16 @@ map<char, int> countOccurrences(const vector<string>& candidateWords) {
 char findMostFrequentChar(const map<char, int>& occurrences, const set<char>& selectedChars) {
     char answer;
     //Write your code here
+    map<char, int> charOccurences = occurrences;
+    int max = 0;
+
+    for (const auto& character : selectedChars) {
+        if (charOccurences[character] > max) {
+            max = charOccurences[character];
+            answer = character;
+        }
+    }
+
     return answer;
 }
 
@@ -82,20 +103,10 @@ char findMostFrequentChar(const map<char, int>& occurrences, const set<char>& se
 char findBestChar(const vector<string>& candidateWords, const set<char>& selectedChars) {
     char answer;
     //Write your code here
-    map<char, int> mp;
+    map<char, int> occurrences = countOccurrences(candidateWords);
 
-    for (auto x : candidateWords)
-        for (auto x_i : x)
-            mp[x_i]++;
-    
-    int max = 0;
+    char answer = findMostFrequentChar(occurrences, selectedChars);
 
-    for (auto x : selectedChars)
-        if (mp[x] > max) {
-            max = mp[x];
-            answer = x;
-        }
-    
     return answer;
 }
 
