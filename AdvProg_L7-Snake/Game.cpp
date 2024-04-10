@@ -52,15 +52,19 @@ Game::~Game()
 
 void Game::snakeMoveTo(Position pos) {
 	// check if position belongs to BOARD or SNAKE body
-	if (pos.isInsideBox(0, 0, width, height) || getCellType(pos) == CELL_SNAKE)
+	if (getCellType(pos) == CELL_OFF_BOARD || getCellType(pos) == CELL_SNAKE)
 		status = GAME_OVER;
 
 	else if (getCellType(pos) == CELL_CHERRY) {
 		this->score++;
 		snake.eatCherry();
 		addCherry();
+		status = GAME_RUNNING;
 
-	} else setCellType(pos, CELL_SNAKE);
+	} else {
+		setCellType(pos, CELL_SNAKE);
+		status = GAME_RUNNING;
+	}
 }
 
 
