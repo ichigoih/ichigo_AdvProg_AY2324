@@ -60,7 +60,7 @@ void Game::snakeMoveTo(Position pos) {
 		snake.eatCherry();
 		addCherry();
 
-	} setCellType(pos, CELL_SNAKE);
+	} else setCellType(pos, CELL_SNAKE);
 }
 
 
